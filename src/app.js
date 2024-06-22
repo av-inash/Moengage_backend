@@ -6,14 +6,14 @@ const breweryRoutes = require('./routes/brewery.routes.js');
 const reviewroutes = require("./routes/review.routes.js")
 
 const app = express();
-app.get("/", (req, res) => {
-    res.json({ message: "Hello from Moengage backend!" });
-});
 
 // Enable CORS for all origins
 app.use(cors({
     origin: "*"
 }));
+app.get("/", (req, res) => {
+    res.json({ message: "Hello from Moengage backend11111111222222222222222!" });
+});
 
 // Middleware to parse incoming requests
 app.use(express.json());
