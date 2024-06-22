@@ -18,6 +18,10 @@
 const dotenv = require("dotenv");
 const connectDB = require("./db/index.js");
 const app = require('./app.js');
+app.get("/", (req, res) => {
+    res.json({ message: "Hello from Moengage backend!" });
+});
+
 
 dotenv.config();
 
