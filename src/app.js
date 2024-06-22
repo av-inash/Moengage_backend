@@ -15,6 +15,9 @@ app.use(cors({
 // Middleware to parse incoming requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.get("/", (req, res) => {
+    res.json({ message: "hello" })
+})
 
 // User routes
 app.use("/api/v1/users", userRoutes);
