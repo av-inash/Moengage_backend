@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Brewery = require('../models/brewery.model');
+// const Brewery = require('../models/brewery.model');
 const Review = require('../models/review.model');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
@@ -34,16 +34,25 @@ const getAllBreweries = asyncHandler(async (req, res) => {
 });
 
 const getBreweryDetails = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.query;
     try {
-        const brewery = await Brewery.findOne({ id });
-        // const reviews = await Review.find({ brewery: brewery._id }).populate('user', 'name');
-        return res.status(200).json(new ApiResponse(200, brewery, "brew details get"));
-    } catch (err) {
-        console.error(err.message);
-        throw new ApiError(400, "something error")
+        const breweryResponse = await axios.get(`https://api.openbrewerydb.org/breweries/${id}`);
+        const reviews = await Review.find({ breweryId: id }).populate('userId', 'name');
+        const response = {
+            brewery: breweryResponse.data,
+            reviews: reviews.map(review => ({
+                name: review.userId.name,
+                rating: review.rating,
+                description: review.description,
+                createdAt: review.createdAt
+            }))
+        };
+        return res.status(200).json(new ApiResponse(200, response, 'Brewery details fetched successfully'));
+    } catch (error) {
+        console.error(error.message);
+        throw new ApiError(400, 'Something went wrong');
     }
-});
+})
 
 
 

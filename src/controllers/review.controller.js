@@ -5,18 +5,19 @@ const ApiError = require('../utils/ApiErrors');
 
 
 const addReview = asyncHandler(async (req, res) => {
-    const { breweryId, rating, description } = req.body;
+    const { breweryId } = req.query
+    const { rating, description } = req.body;
     try {
         const newReview = new Review({
-            user: req.user.id,
-            brewery: breweryId,
+            userId: req.user.id,
+            breweryId: breweryId,
             rating,
             description,
         });
         const review = await newReview.save();
         return res.status(200).json(new ApiResponse(200, review, "Review added successfully"))
     } catch (error) {
-        console.error(err.message);
+        console.error(error.message);
         return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
     }
 });

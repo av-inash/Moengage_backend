@@ -4,12 +4,12 @@ const { searchBrewery, getBreweryDetails, getAllBreweries } = require('../contro
 
 
 
-const verifyJwt = require('../middlewares/auth.middleware');
+const { verifyJwt } = require('../middlewares/auth.middleware');
 
 
 const router = express.Router()
-router.get('/search', searchBrewery)
-// router.get('/:id', getBreweryDetails);
+router.get('/search', verifyJwt, searchBrewery)
+router.get('/find-by-id', verifyJwt, getBreweryDetails);
 router.get("/all", getAllBreweries)
 
 
